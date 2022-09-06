@@ -1,7 +1,7 @@
 import React from "react";
 import './Header.css';
 import { Navbar, NavbarBrand, Nav,NavLink, NavItem, NavbarToggler, Collapse} from "reactstrap";
-import Logo from '../../assets/images/logo.png'
+import Logo from '../../assets/images/logo/logo.png'
 
 const Header = () =>{
     return(
