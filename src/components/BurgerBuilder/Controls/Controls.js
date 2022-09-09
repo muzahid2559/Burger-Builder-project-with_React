@@ -11,8 +11,8 @@ const BuildControl = props =>{
     return(
         <div className="d-flex ">
             <div className="ms-auto" style={{ marginRight:"150px", fontWeight:"bold", fontSize:"1.2rem" }}>{props.label}</div>
-            <Button className="btn btn-danger btn-sm m-1">Less</Button>
-            <Button className="btn btn-success btn-sm m-1">More</Button>
+            <Button className="btn btn-danger btn-sm m-1" onClick={props.removed}>Less</Button>
+            <Button className="btn btn-success btn-sm m-1" onClick={props.added}>More</Button>
         </div>
     )
 }
@@ -24,7 +24,12 @@ const Controls = props =>{
                     <CardBody>
                         {
                             controls.map(item=>{
-                                return <BuildControl label={item.label} type={item.type} key= {Math.random()}/>
+                                return <BuildControl 
+                                        label={item.label} 
+                                        type={item.type} 
+                                        key= {Math.random()} 
+                                        added = {() => props.ingredientAdded(item.type)}
+                                        removed = {() =>props.removeIngredient(item.type)}/>
                             })
                         }
 
