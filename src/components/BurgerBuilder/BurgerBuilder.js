@@ -3,6 +3,7 @@ import Burger from "./Burger/Burger";
 import Controls from "./Controls/Controls";
 import Summary from "./Summary/Summary";
 import {Modal, ModalBody, ModalHeader, ModalFooter, Button} from 'reactstrap';
+import { NavLink } from "react-router-dom";
 
 const INGREDENT_PRICES = {
     salad: 20,
@@ -91,7 +92,7 @@ export default class BurgerBuilder extends Component {
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button color="success" onClick={this.toggleModal}>Continue to Checkout</Button>
+                     <NavLink to="/checkout" className={ "btn btn-success" }>Continue to Checkout</NavLink>
                     <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
                 </ModalFooter>
 
