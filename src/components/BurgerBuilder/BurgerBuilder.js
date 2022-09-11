@@ -4,50 +4,39 @@ import Controls from "./Controls/Controls";
 import Summary from "./Summary/Summary";
 import {Modal, ModalBody, ModalHeader, ModalFooter, Button} from 'reactstrap';
 import { NavLink } from "react-router-dom";
+import { connect, Connect } from "react-redux";
+import {addIngredient, removeIngredient, updatePurchasable} from '../../redux/actionCreators';
 
-const INGREDENT_PRICES = {
-    salad: 20,
-    cheese: 40,
-    meat: 90,
+const mapStateToProps = state =>{
+    return{
+        ingredients:state.ingredients,
+        totalPrice:state.totalPrice,
+        purchasable:state.purchasable,
+    }
+}
+
+const mapDispatchToProps = dispatch =>{
+    return {
+        addIngredient: (igtype) => dispatch(addIngredient(igtype)),
+        removeIngredient: (igtype) => dispatch(removeIngredient(igtype)),
+        updatePurchasable: () =>  dispatch(updatePurchasable()),
+    }
 }
 
 
-
-export default class BurgerBuilder extends Component {
+ class BurgerBuilder extends Component {
     state = {
-        ingredients: [
-            {type: 'salad', amount: 0 },
-            {type: 'cheese', amount: 0 },
-            {type: 'meat', amount: 0 },
-        ],
-        totalPrice: 80,
         modalOpen: false,
-        purchasable: false,
     }
 
     addIngredientHandle = type => {
-        const ingredient = [...this.state.ingredients];
-        const newPrice = this.state.totalPrice + INGREDENT_PRICES[type];
-        for(let item of ingredient){
-            if(item.type === type) item.amount++;
-        }
-        this.setState({ingredients :ingredient, totalPrice: newPrice});
-        this.updatePurchasable(ingredient);
-
+        this.props.addIngredient(type);
+        this.props.updatePurchasable();
     }
 
     removeIngredientHandle = type =>{
-        const ingredient = [...this.state.ingredients];
-        const newPrice = this.state.totalPrice - INGREDENT_PRICES[type];
-        for(let item of ingredient){
-            if(item.type === type) {
-                if(item.amount <=0) return;
-                item.amount--;
-            }
-        }
-        this.setState({ingredients :ingredient, totalPrice: newPrice});
-        this.updatePurchasable(ingredient);
-
+        this.props.removeIngredient(type);
+        this.props.updatePurchasable();
     }
 
     toggleModal = () => {
@@ -56,28 +45,17 @@ export default class BurgerBuilder extends Component {
         });
     }
 
-    updatePurchasable = ingredients =>{
-        const sum = ingredients.reduce((sum,element)=>{
-            return sum + element.amount;
-
-        },0)
-        this.setState({
-            purchasable: sum>0
-        })
-    }
-
-
     render() {
         return (
             <div>
                 <div className="d-flex flex-md-row flex-column">
-                    <Burger ingredients= {this.state.ingredients}/>
+                    <Burger ingredients= {this.props.ingredients}/>
                     <Controls 
                     ingredientAdded = {this.addIngredientHandle} 
                     removeIngredient = {this.removeIngredientHandle}
-                    price = {this.state.totalPrice}
+                    price = {this.props.totalPrice}
                     toggleModal = {this.toggleModal}
-                    purchasable ={this.state.purchasable}
+                    purchasable ={this.props.purchasable}
                     />
 
                 </div>
@@ -86,8 +64,8 @@ export default class BurgerBuilder extends Component {
                 <ModalHeader>Your Order Summary</ModalHeader>
 
                 <ModalBody>
-                    <h5>Total Price: {this.state.totalPrice.toFixed(0)} BDT</h5>
-                    <Summary ingredients ={this.state.ingredients}/>
+                    <h5>Total Price: {this.props.totalPrice.toFixed(0)} BDT</h5>
+                    <Summary ingredients ={this.props.ingredients}/>
 
                 </ModalBody>
 
@@ -102,3 +80,5 @@ export default class BurgerBuilder extends Component {
         )
     }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(BurgerBuilder);
