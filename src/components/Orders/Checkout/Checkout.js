@@ -43,8 +43,12 @@ class Checkout extends Component{
                     <option value="Bkash"> Bkash </option>
                 </select>
                 <br/>
-                <Button style={{ backgroundColor:"#D70F64"  }} className="ms-auto" onClick={this.submitHandler}> Place Order </Button>
+
+                <div style = {{ textAlign:"right" }}>
+                <Button style={{ backgroundColor:"#D70F64"  }} onClick={this.submitHandler}> Place Order </Button>
                 <NavLink to="/" className={ "btn btn-secondary ms-1" } > Cancel </NavLink>
+                </div>
+
                </form>
             </div>
     
