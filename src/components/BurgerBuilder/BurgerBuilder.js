@@ -70,7 +70,7 @@ const mapDispatchToProps = dispatch =>{
                 </ModalBody>
 
                 <ModalFooter>
-                     <NavLink to="/checkout" className={ "btn btn-success" }>Continue to Checkout</NavLink>
+                     <NavLink to="/checkout" className={ "btn" } style={{ backgroundColor:"#D70F64" }}>Continue to Checkout</NavLink>
                     <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
                 </ModalFooter>
 
@@ -78,7 +78,7 @@ const mapDispatchToProps = dispatch =>{
             </div>
             
         )
-    }
+    } 
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BurgerBuilder);
