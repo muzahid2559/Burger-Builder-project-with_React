@@ -3,9 +3,9 @@ import Burger from "./Burger/Burger";
 import Controls from "./Controls/Controls";
 import Summary from "./Summary/Summary";
 import {Modal, ModalBody, ModalHeader, ModalFooter, Button} from 'reactstrap';
-import { NavLink } from "react-router-dom";
-import { connect, Connect } from "react-redux";
+import { connect} from "react-redux";
 import {addIngredient, removeIngredient, updatePurchasable} from '../../redux/actionCreators';
+import { useNavigate } from 'react-router-dom';
 
 const mapStateToProps = state =>{
     return{
@@ -45,6 +45,11 @@ const mapDispatchToProps = dispatch =>{
         });
     }
 
+    handleCheckout = () => {
+        this.props.navigate('/checkout');  // <-- এখানে navigate use করা হয়েছে 
+      };
+    
+
     render() {
         return (
             <div>
@@ -70,15 +75,22 @@ const mapDispatchToProps = dispatch =>{
                 </ModalBody>
 
                 <ModalFooter>
-                     <NavLink to="/checkout" className={ "btn" } style={{ backgroundColor:"#D70F64" }}>Continue to Checkout</NavLink>
+                    <Button style={{ backgroundColor:"#D70F64"  }} onClick={this.handleCheckout}>Continue to Checkout</Button>
                     <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
                 </ModalFooter>
 
                 </Modal>
-            </div>
+            </div> 
             
         )
     } 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BurgerBuilder);
+// নিচের কোডটি দিয়ে BurgerBuilder এ navigate ফাংশন টা পাঠাচ্ছি। 
+function WithNavigate(props) {
+    let navigate = useNavigate();
+    return <BurgerBuilder {...props} navigate={navigate} />;
+  }
+  
+
+export default connect(mapStateToProps, mapDispatchToProps)(WithNavigate);

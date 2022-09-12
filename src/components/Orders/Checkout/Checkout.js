@@ -1,6 +1,8 @@
 import React,{Component} from "react";
 import {Button} from 'reactstrap';
-import { NavLink } from "react-router-dom";
+import {connect} from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 
 class Checkout extends Component{
     state ={
@@ -24,7 +26,9 @@ class Checkout extends Component{
         console.log(this.state.values)
     }
 
-
+    goBack = () => {
+        this.props.navigate('/');  // <-- এখানে navigate use করা হয়েছে 
+      };
 
     render() {
         return(
@@ -46,7 +50,7 @@ class Checkout extends Component{
 
                 <div style = {{ textAlign:"right" }}>
                 <Button style={{ backgroundColor:"#D70F64"  }} onClick={this.submitHandler}> Place Order </Button>
-                <NavLink to="/" className={ "btn btn-secondary ms-1" } > Cancel </NavLink>
+                <Button color="secondary" className= "ms-1" onClick={this.goBack}> Cancel </Button>
                 </div>
 
                </form>
@@ -56,4 +60,13 @@ class Checkout extends Component{
     }
 }
 
-export default Checkout;
+
+// নিচের কোডটি দিয়ে Checkout এ navigate ফাংশন টা পাঠাচ্ছি। 
+function WithNavigate(props) {
+    let navigate = useNavigate();
+    return <Checkout {...props} navigate={navigate} />;
+  }
+  
+
+export default connect(null, null)(WithNavigate);
+
