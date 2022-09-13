@@ -54,6 +54,7 @@ class AuthForm extends Component {
                             borderRadius: "7px",
                         }}>
                             <form onSubmit={handleSubmit}>
+                                
                             <label htmlFor="email">Email : </label>
                             <input
                             name="email"

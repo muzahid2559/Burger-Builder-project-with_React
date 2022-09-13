@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import Spinner from "../../Spinner/Spinner";
 import { resetIngredient } from '../../../redux/actionCreators';
+import { Formik } from 'formik';
 
 const mapDispatchToProps = dispatch =>{
     return {
@@ -23,30 +24,21 @@ const mapStateToProps = state =>{
 
 class Checkout extends Component{
     state ={
-        values:{
-            deliveryAddress:"",
-            phone:"",
-            paymentType:"Cash On Delivery",
-        },
         isLoading: false,
         isModalOpen: false,
         modalMsg: "",
     }
 
-    inputChangeHandler = (e) =>{
-        this.setState({
-            values:{
-                ...this.state.values,
-                [e.target.name] : e.target.value,
-            }
-        })
-    }
+    goBack = () => {
+        this.props.navigate('/');  // <-- এখানে navigate use করা হয়েছে 
+      };
 
-    submitHandler = () =>{
+
+    submitHandler = (values) =>{
         this.setState({isLoading: true})
         const order = {
             ingredients: this.props.ingredients,
-            customer: this.state.values,
+            customer: values,
             price: this.props.totalPrice,
             orderTime: new Date(),
         }
@@ -64,7 +56,7 @@ class Checkout extends Component{
                 this.setState({
                     isLoading: false,
                     isModalOpen: true,
-                    modalMsg: "Something Went Wrong! Order Again",
+                    modalMsg: "Something Went Wrong! Order Again!",
                 })
             }
         })
@@ -72,14 +64,10 @@ class Checkout extends Component{
             this.setState({
                 isLoading: false,
                 isModalOpen: true,
-                modalMsg: "Something Went Wrong! Order Again",
+                modalMsg: "Something Went Wrong! Order Again!",
             })
         })
     }
-
-    goBack = () => {
-        this.props.navigate('/');  // <-- এখানে navigate use করা হয়েছে 
-      };
 
     render() {
         let form = (<div>
@@ -89,27 +77,76 @@ class Checkout extends Component{
                                 padding:"20px",
                             }}>Payment: {this.props.totalPrice} BDT</h4>
 
-               <form style={{   border:"1px solid grey", 
-                                boxShadow:"1px 1px #888888" ,
-                                borderRadius:"5px",
-                                padding:"60px",
-                            }}>
-                <textarea name="deliveryAddress" value={this.state.values.deliveryAddress} className="form-control" placeholder="Your Address" onChange={(e) => this.inputChangeHandler(e)}></textarea>
-                <br/>
-                <input name="phone" className="form-control" value={this.state.values.phone} placeholder="Your Phone Number" onChange={(e) => this.inputChangeHandler(e)}/>
-                <br/>
-                <select name="paymentType" className="form-control" value={this.state.values.paymentType} onChange={(e) => this.inputChangeHandler(e)}>
-                    <option value="Cash On Delivery"> Cash On Delivery </option>
-                    <option value="Bkash"> Bkash </option>
-                </select>
-                <br/>
 
-                <div style = {{ textAlign:"right" }}>
-                <Button style={{ backgroundColor:"#D70F64"  }} onClick={this.submitHandler} disabled={!this.props.purchasable}> Place Order </Button>
-                <Button color="secondary" className= "ms-1" onClick={this.goBack}> Cancel </Button>
-                </div>
+                <Formik         
+                initialValues={{
+                    deliveryAddress: "",
+                    phone: "",
+                    paymentType: "Cash On Delivery",
+                }}
 
-               </form>
+                validate={values => {
+                    const errors = {};
+                    return errors;
+                }}
+
+                onSubmit={(values) => {
+                    this.submitHandler(values);
+                }}
+            >
+                {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
+                    
+                        < form style={{
+                            border: "1px solid grey",
+                            boxShadow: "1px 1px #888888",
+                            borderRadius: "5px",
+                            padding: "20px",
+                        }} onSubmit={handleSubmit}>
+
+                            <textarea
+                                name="deliveryAddress"
+                                id="deliveryAddress"
+                                value={values.deliveryAddress}
+                                className="form-control"
+                                placeholder="Your Address"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                            ></textarea>
+                            <span>{errors.deliveryAddress && touched.deliveryAddress && errors.deliveryAddress}</span>
+
+                            <br />
+
+                            <input 
+                                name="phone" 
+                                id="phone" 
+                                className="form-control" 
+                                value={values.phone} 
+                                placeholder="Your Phone Number" 
+                                onBlur={handleBlur} 
+                                onChange={handleChange} />
+
+                            <br />
+
+                            <select 
+                                name="paymentType" 
+                                id="paymentType" 
+                                className="form-control" 
+                                value={values.paymentType} 
+                                onBlur={handleBlur} 
+                                onChange={handleChange}>
+
+                                <option value="Cash On Delivery">Cash On Delivery</option>
+                                <option value="Bkash">Bkash</option>
+
+                            </select>
+
+                            <br />
+
+                            <Button type="submit" style={{ backgroundColor: "#D70F64" }} className="mr-auto" disabled={!this.props.purchasable}>Place Order</Button>
+                            <Button color="secondary" className="ml-1" onClick={this.goBack}>Cancel</Button>
+
+                        </form>)}
+            </Formik>
         </div>)
 
         return(
