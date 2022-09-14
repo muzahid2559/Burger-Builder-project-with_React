@@ -42,7 +42,7 @@ class Checkout extends Component{
             price: this.props.totalPrice,
             orderTime: new Date(),
         }
-        axios.post("https://burger-eea44-default-rtdb.firebaseio.com/orders.json", order)
+        axios.post("https://first-c386c-default-rtdb.firebaseio.com/orders.json", order)
         .then(response => {
             if(response.status === 200){
                 this.setState({
