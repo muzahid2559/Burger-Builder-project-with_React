@@ -34,7 +34,7 @@ class AuthForm extends Component {
 
                     onSubmit={
                             (values) => {
-                                console.log(values)
+                                this.props.auth(values.email, values.password, this.state.mode);
 
                             }                       
                    }

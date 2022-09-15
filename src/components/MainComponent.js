@@ -3,24 +3,49 @@ import Header from "./Header/Header";
 import BurgerBuilder from "./BurgerBuilder/BurgerBuilder";
 import Orders from "./Orders/Orders";
 import Checkout from "./Orders/Checkout/Checkout";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate} from "react-router-dom";
 import AuthForm from "./Auth/AuthForm";
+import { connect } from "react-redux";
 
+
+
+const mapSatateToProps = state =>{
+    return{
+        token: state.token,
+    }
+}
 const MainComponent  = props =>{
+
+    let rout = null;
+    if(props.token === null){
+        rout = (
+            <Routes>
+                <Route path= "/login" element = {<AuthForm/>}/>
+                <Route path="/login" element ={<Navigate to ="/login"/>}/>
+            </Routes>
+
+        )
+    } else {
+            rout = (       
+            <Routes> 
+                <Route path="/orders" element= {<Orders/>}/>
+                <Route path="/checkout" element= {<Checkout/>}/>
+                <Route path="/" exact element= {<BurgerBuilder/>}/>
+                <Route path="/" element ={<Navigate to ="/"/>}/>
+            </Routes>
+            )
+    }
     return (
         <div>
             <Header/>
             <div className="container">
-                <Routes>
-                    <Route path="/orders" element= {<Orders/>}/>
-                    <Route path="/checkout" element= {<Checkout/>}/>
-                    <Route path= "/login" element = {<AuthForm/>}/>
-                    <Route path="/" element= {<BurgerBuilder/>}/>
-                </Routes>
+
+                {rout}
+
             </div>
             
         </div>
     )
 }
 
-export default MainComponent;
+export default connect(mapSatateToProps) (MainComponent);
