@@ -21,7 +21,7 @@ const MainComponent  = props =>{
         rout = (
             <Routes>
                 <Route path= "/login" element = {<AuthForm/>}/>
-                <Route path="/login" element ={<Navigate to ="/login"/>}/>
+                <Route path="/" element ={<Navigate to ="/login"/>}/>
             </Routes>
 
         )
@@ -30,8 +30,8 @@ const MainComponent  = props =>{
             <Routes> 
                 <Route path="/orders" element= {<Orders/>}/>
                 <Route path="/checkout" element= {<Checkout/>}/>
-                <Route path="/" exact element= {<BurgerBuilder/>}/>
-                <Route path="/" element ={<Navigate to ="/"/>}/>
+                <Route path="/" element= {<BurgerBuilder/>}/>
+                <Route path="/login" element ={<Navigate to ="/"/>}/>
             </Routes>
             )
     }
