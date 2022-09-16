@@ -7,6 +7,7 @@ import { Routes, Route, Navigate} from "react-router-dom";
 import AuthForm from "./Auth/AuthForm";
 import { connect } from "react-redux";
 import { authCheck } from "../redux/authActionCreators";
+import Logout from "./Auth/Logout";
 
 
 
@@ -45,6 +46,7 @@ class MainComponent extends Component {
                 <Routes> 
                     <Route path="/orders" element= {<Orders/>}/>
                     <Route path="/checkout" element= {<Checkout/>}/>
+                    <Route path="/logout" element= {<Logout/>}/>
                     <Route path="/" element= {<BurgerBuilder/>}/>
                     <Route path="/login" element ={<Navigate to ="/"/>}/>
                 </Routes>
