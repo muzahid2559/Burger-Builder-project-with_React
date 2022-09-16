@@ -23,6 +23,9 @@ const INITIAL_STATE = {
 
     token: null,
     userId: null,
+
+    authLoadingg: false,
+    authFailedMsg:null,
 }
 
 export const reducer = (state = INITIAL_STATE, action ) =>{
@@ -102,6 +105,12 @@ export const reducer = (state = INITIAL_STATE, action ) =>{
                 token: null,
                 userId: null,
             }
+
+        case actionTypes.AUTH_LOADING:
+            return {
+                ...state,
+                authLoading: action.payload,
+            }    
 
         default:
             return state;
