@@ -72,8 +72,8 @@ class AuthForm extends Component {
 
                 if (!values.password) {
                     errors.password = 'Required';
-                } else if (values.password.length < 4) {
-                    errors.password = 'Must be atleast 4 characters!';
+                } else if (values.password.length < 6) {
+                    errors.password = 'Must be atleast 6 characters!';
                 }
                 if(this.state.mode === "Sign Up") {
                     if (!values.passwordConfirm) {
