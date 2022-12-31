@@ -6,9 +6,9 @@
 ---
 
 1. React.js
-3. ReactStrap
-4. CSS
-5.firebase Authentication system
+2. ReactStrap
+3. CSS
+4.firebase Authentication system
 
 ### How to start?
 
